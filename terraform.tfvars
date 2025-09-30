@@ -1,0 +1,8 @@
+instance_type     = "t3.micro"
+ami               = "ami-0b016c703b95ecbe4"
+region            = "us-east-2"
+availability_zone = "us-east-2a"
+prefix            = "gmi"
+cidr              = "10.123.0.0/16"
+local_ip          = ["189.138.103.198"]
+bucket_name       = "gmi-bucket"
