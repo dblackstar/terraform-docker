@@ -1,8 +1,8 @@
 output "bucket_name" {
-  value = aws_s3_bucket.main.bucket
+  value = aws_s3_bucket.s3_bucket.bucket
 }
 
 output "bucket_id" {
-  value = aws_s3_bucket.main.id
+  value = aws_s3_bucket.s3_bucket.id
 }
 
