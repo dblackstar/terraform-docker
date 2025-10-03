@@ -6,3 +6,4 @@ prefix            = "gmi"
 cidr              = "10.123.0.0/16"
 local_ip          = ["189.138.103.198"]
 bucket_name       = "gmi-bucket"
+instance_name     = "docker_vm"

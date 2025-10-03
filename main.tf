@@ -25,6 +25,45 @@ resource "aws_subnet" "subnet" {
   }
 }
 
+#-----------------------------------------
+############ Internet Gateway ############
+#-----------------------------------------
+resource "aws_internet_gateway" "gateway" {
+  vpc_id = aws_vpc.vpc.id
+
+  tags = {
+    Name = "${var.prefix}-gateway"
+  }
+}
+
+#---------------------------------------------
+############ Route Table Resource ############
+#---------------------------------------------
+resource "aws_route_table" "route_table" {
+  vpc_id = aws_vpc.vpc.id
+
+  tags = {
+    Name = "${var.prefix}-route_table"
+  }
+}
+
+#---------------------------------------
+############ Route Resource ############
+#---------------------------------------
+resource "aws_route" "route" {
+  route_table_id         = aws_route_table.route_table.id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = aws_internet_gateway.gateway.id
+}
+
+#------------------------------------------------
+############ Route Table Association ############
+#------------------------------------------------
+resource "aws_route_table_association" "rta" {
+  subnet_id      = aws_subnet.subnet.id
+  route_table_id = aws_route_table.route_table.id
+}
+
 #---------------------------------------
 ############ Security Group ############
 #---------------------------------------
@@ -70,13 +109,13 @@ module "s3_bucket" {
 module "ec2_instance" {
   source = "modules/EC2"
 
-  ami                    = var.ami
+  ami_id                 = var.ami
   instance_type          = var.instance_type
-  vpc_security_group_ids = [aws_security_group.sg.id]
-  subnet_id              = aws_subnet.subnet.id
+  security_group_id      = [aws_security_group.sg.id]
+  subnet_id              = var.aws_subnet.subnet.id
   user_data              = file("${path.module}/docker.sh")
 
   tags = {
-    Name = "${var.prefix}-instance"
+    Name = var.instance_name
   }
 }

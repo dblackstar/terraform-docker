@@ -1,11 +1,11 @@
 #!/bin/bash
 
-yum udpate -y
+yum update -y
 
 yum install -y docker
 systemctl start docker
 systemctl enable docker
-usermd a- -G docker ec2-user
+usermod -a -G docker ec2-user
 
 mkdir -p /home/ec2-user/docker-app
 cd /home/ec2-user/docker-app
@@ -46,6 +46,6 @@ docker tag devops-webapp $FULL_IMAGE_NAME
 
 
 docker run -d -p 80:80 --name devops-container devops-webapp
-chown -R ec2-user:ec2-user /home/ec2-user/docekr-app
+chown -R ec2-user:ec2-user /home/ec2-user/docker-app
 
 sleep 15

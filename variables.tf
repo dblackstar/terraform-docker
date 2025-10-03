@@ -37,3 +37,8 @@ variable "bucket_name" {
   description = "Bucket name"
   type        = string
 }
+
+variable "instance_name" {
+  description = "instance name"
+  type        = string
+}
