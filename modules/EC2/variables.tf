@@ -5,7 +5,7 @@ variable "subnet_id" {
 
 variable "security_group_id" {
   description = "ID pf the security group"
-  type = string
+  type = list(string)
 }
 
 variable "instance_type" {

@@ -72,9 +72,16 @@ resource "aws_security_group" "sg" {
   vpc_id = aws_vpc.vpc.id
 
   ingress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = var.local_ip
+  }
+
+  ingress {
+    from_port   = 80
+    to_port     = 800
+    protocol    = "tcp"
     cidr_blocks = var.local_ip
   }
 
@@ -94,28 +101,26 @@ resource "aws_security_group" "sg" {
 ############ S3 Bucket Resource ############
 #-------------------------------------
 module "s3_bucket" {
-  source = "modules/S3"
+  source = "./modules/S3"
 
   bucket_name = var.bucket_name
 
-  tags = {
-    Name = var.bucket_name
-  }
 }
 
 #-------------------------------------
 ############ EC2 Resource ############
 #-------------------------------------
 module "ec2_instance" {
-  source = "modules/EC2"
+  source = "./modules/EC2"
 
-  ami_id                 = var.ami
-  instance_type          = var.instance_type
-  security_group_id      = [aws_security_group.sg.id]
-  subnet_id              = var.aws_subnet.subnet.id
-  user_data              = file("${path.module}/docker.sh")
+  ami_id            = var.ami
+  instance_type     = var.instance_type
+  security_group_id = [aws_security_group.sg.id]
+  subnet_id         = aws_subnet.subnet.id
+  instance_name     = var.instance_name
+  user_data = templatefile("${path.module}/docker.sh", {
+    dockerhub_username = var.dockerhub_username
+    dockerhub_password = var.dockerhub_password
+  })
 
-  tags = {
-    Name = var.instance_name
-  }
 }

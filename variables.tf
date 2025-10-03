@@ -42,3 +42,14 @@ variable "instance_name" {
   description = "instance name"
   type        = string
 }
+
+variable "dockerhub_username" {
+  description = "Dockerhub username"
+  type        = string
+}
+
+variable "dockerhub_password" {
+  description = "Dockerhub password"
+  type        = string
+  sensitive   = true
+}

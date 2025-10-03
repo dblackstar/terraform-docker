@@ -18,10 +18,10 @@ output "security_group_id" {
   value = aws_security_group.sg.id
 }
 
-output "key_pair_id" {
-  value = aws_key_pair.ssh_key.id
+output "instance_id" {
+  value = module.ec2_instance.instance_id
 }
 
-output "instance_id" {
-  value = aws_instance.ec2.id
+output "s3_bucket_name" {
+  value = module.s3_bucket.bucket_name
 }
